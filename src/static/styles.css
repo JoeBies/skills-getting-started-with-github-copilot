@@ -191,7 +191,6 @@ footer {
 .activity-card .participants .delete-icon:hover {
   color: #b71c1c;
 }
-}
 
 /* Avatar badge for each participant (initials) */
 .activity-card .participants .avatar {
