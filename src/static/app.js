@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
               .map((s) => (s ? s[0].toUpperCase() : ""))
               .join("")
               .slice(0, 2);
-            participantsHtml += `<li><span class="avatar">${initials}</span><span class="p-name">${p}</span></li>`;
+            participantsHtml += `<li><span class="avatar">${initials}</span><span class="p-name">${p}</span><span class="delete-icon" title="Remove participant" data-activity="${name}" data-email="${p}">&#128465;</span></li>`;
           });
           participantsHtml += `</ul>`;
         }
@@ -91,6 +91,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Refresh activities so participant lists update
         fetchActivities();
+        // Handle participant delete (unregister)
+        activitiesList.addEventListener("click", async (event) => {
+          const target = event.target;
+          if (target.classList.contains("delete-icon")) {
+            const activity = target.getAttribute("data-activity");
+            const email = target.getAttribute("data-email");
+            if (!activity || !email) return;
+            try {
+              const response = await fetch(`/activities/${encodeURIComponent(activity)}/unregister?email=${encodeURIComponent(email)}`, {
+                method: "POST"
+              });
+              const result = await response.json();
+              if (response.ok) {
+                messageDiv.textContent = result.message || "Participant removed.";
+                messageDiv.className = "success";
+                fetchActivities();
+              } else {
+                messageDiv.textContent = result.detail || "Failed to remove participant.";
+                messageDiv.className = "error";
+              }
+              messageDiv.classList.remove("hidden");
+              setTimeout(() => {
+                messageDiv.classList.add("hidden");
+              }, 4000);
+            } catch (error) {
+              messageDiv.textContent = "Error removing participant.";
+              messageDiv.className = "error";
+              messageDiv.classList.remove("hidden");
+            }
+          }
+        });
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";

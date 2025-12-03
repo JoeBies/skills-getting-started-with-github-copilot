@@ -178,6 +178,19 @@ footer {
   box-shadow: 0 1px 0 rgba(0,0,0,0.03);
   font-size: 13px;
   color: #444;
+  position: relative;
+}
+
+.activity-card .participants .delete-icon {
+  cursor: pointer;
+  margin-left: 6px;
+  color: #d32f2f;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+.activity-card .participants .delete-icon:hover {
+  color: #b71c1c;
+}
 }
 
 /* Avatar badge for each participant (initials) */
