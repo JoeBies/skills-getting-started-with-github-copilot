@@ -13,18 +13,44 @@ document.addEventListener("DOMContentLoaded", () => {
       // Clear loading message
       activitiesList.innerHTML = "";
 
+      // Clear activity select options (keep a placeholder)
+      activitySelect.innerHTML = '<option value="">Choose an activity</option>';
+
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
         const activityCard = document.createElement("div");
         activityCard.className = "activity-card";
 
-        const spotsLeft = details.max_participants - details.participants.length;
+        const spotsLeft = details.max_participants - (details.participants?.length || 0);
+
+        // Build participants markup
+        const participants = details.participants || [];
+        let participantsHtml = `<div class="participants"><h5>Participants</h5>`;
+
+        if (participants.length === 0) {
+          participantsHtml += `<div class="empty">No participants yet</div>`;
+        } else {
+          participantsHtml += `<ul>`;
+          participants.forEach((p) => {
+            // derive simple initials from the local-part of an email or a name-like string
+            const local = (p.split && p.split("@")[0]) || String(p);
+            const initials = local
+              .split(/[\.\-_ ]+/)
+              .map((s) => (s ? s[0].toUpperCase() : ""))
+              .join("")
+              .slice(0, 2);
+            participantsHtml += `<li><span class="avatar">${initials}</span><span class="p-name">${p}</span></li>`;
+          });
+          participantsHtml += `</ul>`;
+        }
+        participantsHtml += `</div>`;
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          ${participantsHtml}
         `;
 
         activitiesList.appendChild(activityCard);
@@ -62,6 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
+
+        // Refresh activities so participant lists update
+        fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
