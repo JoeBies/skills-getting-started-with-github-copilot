@@ -142,3 +142,87 @@ footer {
   padding: 20px;
   color: #666;
 }
+
+/* Participants list inside activity cards */
+.activity-card .participants {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #eee;
+  display: block;
+}
+
+.activity-card .participants h5 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+.activity-card .participants ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.activity-card .participants li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 6px 8px;
+  border-radius: 18px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  font-size: 13px;
+  color: #444;
+  position: relative;
+}
+
+.activity-card .participants .delete-icon {
+  cursor: pointer;
+  margin-left: 6px;
+  color: #d32f2f;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+.activity-card .participants .delete-icon:hover {
+  color: #b71c1c;
+}
+
+/* Avatar badge for each participant (initials) */
+.activity-card .participants .avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #0d47a1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  border: 1px solid rgba(13,71,161,0.08);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* Empty state when no participants */
+.activity-card .participants .empty {
+  color: #777;
+  font-style: italic;
+  padding: 8px 0;
+}
+
+/* Compact layout on narrow cards */
+@media (max-width: 480px) {
+  .activity-card .participants ul {
+    gap: 6px;
+  }
+  .activity-card .participants li {
+    padding: 5px 6px;
+    border-radius: 16px;
+    font-size: 12px;
+  }
+}
